@@ -33,7 +33,7 @@ export default {
 		}),
 		commonjs({
 			ignoreDynamicRequires: true,
-			ignore: '*.node'
+			exclude: '*.node'
 		}),
 		copy({
 			targets: [

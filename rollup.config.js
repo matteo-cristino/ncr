@@ -32,7 +32,8 @@ export default {
 			exportConditions: ['node']
 		}),
 		commonjs({
-			ignoreDynamicRequires: true
+			ignoreDynamicRequires: true,
+			ignore: '*.node'
 		}),
 		copy({
 			targets: [

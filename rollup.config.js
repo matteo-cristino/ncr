@@ -31,7 +31,10 @@ export default {
 			preferBuiltins: true,
 			exportConditions: ['node']
 		}),
-		commonjs({ ignoreDynamicRequires: true }),
+		commonjs({
+			ignoreDynamicRequires: true,
+			exclude: 'node_modules/fsevents/**'
+		}),
 		copy({
 			targets: [
 				{ src: src, dest: 'dist/' },

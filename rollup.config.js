@@ -32,8 +32,7 @@ export default {
 			exportConditions: ['node']
 		}),
 		commonjs({
-			ignoreDynamicRequires: true,
-			exclude: '**/node_modules/fsevents/**'
+			ignoreDynamicRequires: true
 		}),
 		copy({
 			targets: [

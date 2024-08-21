@@ -116,6 +116,10 @@ importers:
       zenroom:
         specifier: ^4.32.6
         version: 4.32.6
+    optionalDependencies:
+      fsevents:
+        specifier: '*'
+        version: 2.3.3
     devDependencies:
       '@rollup/plugin-commonjs':
         specifier: ^25.0.7

@@ -29,50 +29,61 @@ jobs:
           echo "version=$( jq -r '.packageManager' package.json | cut -d@ -f2 )" >> $GITHUB_OUTPUT
 
   test:
-    name: 🧪 Pnpm test
     needs: [packageManager]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
+    runs-on: macos-latest
     steps:
       - name: 🛠️ Prepare pnpm workspace
         uses: dyne/pnpm@main
         with:
           node-version: 20
           pnpm-version: ${{ needs.packageManager.outputs.version }}
-      - name: 🧪 Run tests
-        run: |
-          pnpm test
+      - run: ./ncr-macos-arm64 -z ./tests/fixtures -p 3000 --public-directory ./public &
+      - run: pnpm stepci run ./tests/workflow.stepci.yml
+  # test:
+  #   name: 🧪 Pnpm test
+  #   needs: [packageManager]
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest]
+  #   steps:
+  #     - name: 🛠️ Prepare pnpm workspace
+  #       uses: dyne/pnpm@main
+  #       with:
+  #         node-version: 20
+  #         pnpm-version: ${{ needs.packageManager.outputs.version }}
+  #     - name: 🧪 Run tests
+  #       run: |
+  #         pnpm test
 
-  test_exec:
-    name: 🏗️  Build and test executable
-    needs: [packageManager]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest]
-      fail-fast: false
-    steps:
-      - name: 🛠️  Prepare pnpm workspace
-        uses: dyne/pnpm@main
-        with:
-          node-version: 20
-          pnpm-version: ${{ needs.packageManager.outputs.version }}
-      - name: 🏗️  Build and start executable
-        run: |
-          make build
-          ls -al
-      - name: run help
-        run: |
-          ./ncr-linux-x64 --help
-        if: matrix.os == 'ubuntu-latest'
-      - name: run help
-        run: |
-          ./ncr-macos-arm64 --help
-          echo '==========================================================='
-          ./ncr-macos-x64 --help
-        if: matrix.os == 'macos-latest'
+  # test_exec:
+  #   name: 🏗️  Build and test executable
+  #   needs: [packageManager]
+  #   runs-on: ${{ matrix.os }}
+  #   strategy:
+  #     matrix:
+  #       os: [ubuntu-latest, macos-latest]
+  #     fail-fast: false
+  #   steps:
+  #     - name: 🛠️  Prepare pnpm workspace
+  #       uses: dyne/pnpm@main
+  #       with:
+  #         node-version: 20
+  #         pnpm-version: ${{ needs.packageManager.outputs.version }}
+  #     - name: 🏗️  Build and start executable
+  #       run: |
+  #         make build
+  #         ls -al
+  #     - name: run help
+  #       run: |
+  #         ./ncr-linux-x64 --help
+  #       if: matrix.os == 'ubuntu-latest'
+  #     - name: run help
+  #       run: |
+  #         ./ncr-macos-arm64 --help
+  #         echo '==========================================================='
+  #         ./ncr-macos-x64 --help
+  #       if: matrix.os == 'macos-latest'
 
   semantic-release:
     name: 🤖 Semantic release

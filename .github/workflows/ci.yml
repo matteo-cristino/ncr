@@ -63,7 +63,16 @@ jobs:
         run: |
           make build
           ls -al
-          ./ncr --help
+      - name: run help
+        run: |
+          ./ncr-linux-x64 --help
+        if: matrix.os == 'ubuntu-latest'
+      - name: run help
+        run: |
+          ./ncr-macos-arm64 --help
+          echo '==========================================================='
+          ./ncr-macos-x64 --help
+        if: matrix.os == 'macos-latest'
 
   semantic-release:
     name: 🤖 Semantic release

@@ -33,7 +33,7 @@ export default {
 		}),
 		commonjs({
 			ignoreDynamicRequires: true,
-			exclude: 'node_modules/fsevents/**'
+			exclude: '**/node_modules/fsevents/**'
 		}),
 		copy({
 			targets: [

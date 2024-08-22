@@ -26,7 +26,7 @@ export default {
 	},
 	external: [
 		'fsevents'
-	]
+	],
 	plugins: [
 		json(),
 		typescript(),

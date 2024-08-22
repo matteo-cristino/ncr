@@ -34,7 +34,9 @@
 			"dist/*.html"
 		],
 		"targets": [
-			"latest-linux-x64"
+			"latest-linux-x64",
+			"latest-macos-x64",
+			"latest-macos-arm64"
 		],
 		"outputPath": "./"
 	},
@@ -118,5 +120,8 @@
 		"tslog": "^4.9.3",
 		"typescript": "^5.4.2",
 		"winston": "^3.12.0"
+	},
+	"optionalDependencies": {
+		"fsevents": "*"
 	}
 }

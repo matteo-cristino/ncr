@@ -31,7 +31,10 @@ jobs:
   test:
     name: 🧪 Pnpm test
     needs: [packageManager]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     steps:
       - name: 🛠️ Prepare pnpm workspace
         uses: dyne/pnpm@main
@@ -41,6 +44,35 @@ jobs:
       - name: 🧪 Run tests
         run: |
           pnpm test
+
+  test_exec:
+    name: 🏗️  Build and test executable
+    needs: [packageManager]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+      fail-fast: false
+    steps:
+      - name: 🛠️  Prepare pnpm workspace
+        uses: dyne/pnpm@main
+        with:
+          node-version: 20
+          pnpm-version: ${{ needs.packageManager.outputs.version }}
+      - name: 🏗️  Build and start executable
+        run: |
+          make build
+          ls -al
+      - name: run help
+        run: |
+          ./ncr-linux-x64 -z ./tests/fixtures -p 3000 --public-directory ./public &
+          pnpm stepci run ./tests/workflow.stepci.yml
+        if: matrix.os == 'ubuntu-latest'
+      - name: run help
+        run: |
+          ./ncr-macos-arm64 -z ./tests/fixtures -p 3000 --public-directory ./public &
+          pnpm stepci run ./tests/workflow.stepci.yml
+        if: matrix.os == 'macos-latest'
 
   semantic-release:
     name: 🤖 Semantic release

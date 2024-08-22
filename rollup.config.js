@@ -24,6 +24,9 @@ export default {
 		format: 'cjs',
 		inlineDynamicImports: true
 	},
+	external: [
+		'fsevents'
+	]
 	plugins: [
 		json(),
 		typescript(),
@@ -32,8 +35,7 @@ export default {
 			exportConditions: ['node']
 		}),
 		commonjs({
-			ignoreDynamicRequires: true,
-			exclude: '*.node'
+			ignoreDynamicRequires: true
 		}),
 		copy({
 			targets: [
